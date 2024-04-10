@@ -1,0 +1,108 @@
+/* App.css */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #dddddd74;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 2rem; /* Aumenta el tamaño de la fuente */
+  text-align: center; /* Centra el texto */
+  color: #333; /* Cambia el color del texto */
+  margin-bottom: 20px; /* Añade un margen en la parte inferior para separarlo de otros elementos */
+  font-family: 'Arial', sans-serif; /* Cambia la fuente (opcional) */
+}
+
+h2 {
+  font-size: 1.5rem; /* Ligeramente más pequeño que el h1 */
+  text-align: center; /* Centra el texto */
+  color: #333; /* Igual color que h1 para mantener coherencia */
+  margin-top: 40px; /* Espacio antes del título */
+  margin-bottom: 20px; /* Espacio después del título, antes de las notas */
+  font-family: 'Arial', sans-serif; /* Mantiene la fuente coherente con h1 */
+}
+
+.form-container {
+  margin-bottom: 10px;
+  margin-left: 20px;
+  margin-right: 45px;
+}
+
+.form-input {
+  width: 100%;
+  margin-bottom: 10px;
+  margin-right: 20px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.form-button {
+  margin-right: 10px;
+  margin-bottom: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.form-button:hover {
+  background-color: #0056b3;
+}
+
+.notes-list {
+  list-style: none;
+  padding: 0;
+}
+
+.note-item {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.note-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.note-content {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.note-image {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.note-buttons {
+  margin-top: 10px;
+}
+
+.note-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.note-button:hover {
+  background-color: #0056b3;
+}
