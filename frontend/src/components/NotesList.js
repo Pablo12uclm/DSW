@@ -2,10 +2,16 @@ import React, { useEffect, useState } from 'react';
 import Note from './Note'; // Asegúrate de tener este componente
 import NoteForm from './NoteForm'; // Asegúrate de tener este componente
 import '../styles/App.css'
+import UserManagement from './UserManagement';
 
-function NotesList() {
+
+function NotesList({ isAdminLoggedIn}) {
+  const [showUserManagement, setShowUserManagement] = useState(false); // Estado para controlar si se muestra UserManagement
+
+  const handleUserManagementClick = () => {
+    setShowUserManagement(!showUserManagement);
+  }
   const [notes, setNotes] = useState([]);
-
   const fetchNotes = () => {
     fetch('http://localhost:3000/api/notes')
       .then(response => response.json())
@@ -65,17 +71,25 @@ function NotesList() {
 
   return (
     <div>
-      <h1>Create Note</h1>
-      <NoteForm addNote={addNote} />
-      <h1>My Notes</h1>
-      {notes.map(note => (
-        <Note 
-          key={note.id} 
-          note={note} 
-          deleteNote={deleteNote} 
-          updateNote={updateNote}
-        />
-      ))}
+      <div id='UserManagement'>
+        {isAdminLoggedIn && <button onClick={handleUserManagementClick}>Users Management</button>}
+        {showUserManagement && <UserManagement />}
+      </div>
+      {!showUserManagement && (
+        <div id='Notes'>
+          <h1>Create Note</h1>
+            <NoteForm addNote={addNote} />
+          <h1>My Notes</h1>
+          {notes.map(note => (
+            <Note 
+              key={note.id} 
+              note={note} 
+              deleteNote={deleteNote} 
+              updateNote={updateNote}
+            />
+          ))}
+      </div>
+      )}
     </div>
   );
   
