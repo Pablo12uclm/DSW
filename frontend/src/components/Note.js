@@ -2,24 +2,32 @@
 import React, { useState } from 'react';
 import '../styles/Note.css';
 
+
+// Definimos el componente Note que recibe props para manipular y visualizar una nota
 function Note({ note, deleteNote, updateNote }) {
+  // Estado que indica si la nota está en modo de edición
   const [isEditing, setIsEditing] = useState(false);
+  // Estado que almacena los detalles de la nota que está siendo editada
   const [editedNote, setEditedNote] = useState({ ...note });
 
+  // Función para habilitar el modo de edición
   const handleEditClick = () => {
     setIsEditing(true);
   };
 
+  // Función para cancelar la edición y restaurar los datos originales de la nota
   const handleCancelEdit = () => {
     setIsEditing(false);
     setEditedNote({ ...note });
   };
 
+  // Función para guardar las ediciones hechas a la nota y desactivar el modo de edición
   const handleSaveEdit = () => {
     updateNote(note.id, editedNote);
     setIsEditing(false);
   };
 
+  // Función para manejar cambios en los campos de entrada de la nota durante la edición
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditedNote({
@@ -28,6 +36,7 @@ function Note({ note, deleteNote, updateNote }) {
     });
   };
 
+  // Función para manejar cambios en los ítems de la lista de la nota
   const handleChangeListItem = (index, value) => {
     const newItems = editedNote.items ? [...editedNote.items] : [];
     newItems[index] = value;
@@ -37,6 +46,7 @@ function Note({ note, deleteNote, updateNote }) {
     });
   };
 
+  // Función para manejar cambios en las URLs de imágenes asociadas con la nota
   const handleChangeImageUrl = (index, value) => {
     const newImages = editedNote.images ? [...editedNote.images] : [];
     newImages[index] = value;
