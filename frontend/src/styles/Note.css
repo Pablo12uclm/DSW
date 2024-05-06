@@ -48,6 +48,34 @@
   margin-left: 10px;
 }
 
+.delete-button {
+  color: red;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.note-items, .note-images {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.add-button {
+  margin-top: 10px;
+  color: green;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.note-items, .note-images {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
 .note-button:hover {
   background-color: #0056b3;
 }
