@@ -1,13 +1,14 @@
-// models/note.js
+// models/Note.js
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-class Note {
-    constructor(id, title, content, items = [], images = [], check = false) {
-      this.id = id;
-      this.title = title;
-      this.content = content;
-      this.items = items; // Lista de ítems de texto
-      this.images = images; // URLs de las imágenes
-      this.check = check;
-    }
-  }
-  
+const noteSchema = new Schema({
+  title: { type: String, required: true },
+  content: { type: String, required: true },
+  items: [String],
+  images: [String]
+}, { timestamps: true });
+
+const Note = mongoose.model('Note', noteSchema);
+
+module.exports = Note;
