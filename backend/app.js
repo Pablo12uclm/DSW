@@ -40,6 +40,7 @@ app.use('/users', usersRouter);
 // Ruta para las notas
 app.use('/api/notes', notesRoutes);
 app.use('/api/login', loginRouter);
+app.use('/api/users', usersRouter);
 
 const authController = require('./controllers/authController');
 
