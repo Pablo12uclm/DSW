@@ -1,47 +1,36 @@
-import React, { useState } from 'react';
-import './styles/App.css';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import Login from './components/Login';
+import Register from './components/Register';
 import NotesList from './components/NotesList';
-import LogIn from './components/LogIn';
-import UserManagement from './components/UserManagement';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [showUserManagement, setShowUserManagement] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token') ? true : false);
 
-  const handleLogin = (userData) => {
-    setIsLoggedIn(true);
-    if (userData.username === 'admin') {
-      setIsAdmin(true);
-      setShowUserManagement(true)
-    }
-  };
+  useEffect(() => {
+    // Este evento se dispara cuando se actualiza el localStorage
+    const handleStorageChange = () => {
+      setIsLoggedIn(localStorage.getItem('token') ? true : false);
+    };
 
-  const handleUserManagement = () => {
-    setShowUserManagement(true);
-  };
+    // Agrega el listener para el evento de almacenamiento
+    window.addEventListener('storage', handleStorageChange);
 
-  const handleExitUserManagement = () => {
-    setShowUserManagement(false);
-  };
+    // Limpieza del componente
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        
-      </header>
-      
-      {/* Mostrar el componente de Login si el usuario no está logueado */}
-      {!isLoggedIn && <LogIn onLogin={handleLogin} />}
-      
-      {/* Mostrar el componente de gestión de usuarios si el usuario está logueado y es administrador */}
-      {/*{isLoggedIn && isAdmin && <UserManagement/>}*/}
-
-      {/* Mostrar el componente de Notas solo si el usuario está logueado */}
-      {isLoggedIn && <NotesList isAdminLoggedIn={isAdmin}/>}
-      
-      
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/notes" element={isLoggedIn ? <NotesList /> : <Navigate replace to="/login" />} />
+        <Route path="/" element={<Navigate replace to={isLoggedIn ? "/notes" : "/login"} />} />
+      </Routes>
+    </Router>
   );
 }
 
