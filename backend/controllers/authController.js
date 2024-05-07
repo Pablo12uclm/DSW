@@ -1,31 +1,29 @@
-// authController.js
+const User = require('../models/User');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
-// Definir la base de datos de usuarios
-const usersDB = [
-    { username: 'admin', password: '12345' },
-    { username: 'usuario', password: '54321' },
-    { username: 'usuario2', password: '15243' }
-  ];
-  
-  // Controlador para el inicio de sesión
-  exports.login = (req, res) => {
+exports.login = async (req, res) => {
     const { username, password } = req.body;
-  
-    // Verificar si el usuario existe en la base de datos
-    const user = usersDB.find(user => user.username === username);
-  
-    if (!user) {
-      // Si el usuario no existe, enviar un mensaje de error
-      return res.status(401).json({ error: 'Invalid username or password' });
+
+    try {
+        const user = await User.findOne({ username });
+        if (!user) {
+            console.log("User not found:", username);
+            return res.status(401).json({ error: 'Invalid username or password' });
+        }
+
+        const match = await bcrypt.compare(password, user.password);
+        console.log("Password match:", match);
+
+        if (!match) {
+            console.log("Password incorrect for user:", username);
+            return res.status(401).json({ error: 'Invalid password' });
+        }
+
+        const token = jwt.sign({ id: user._id, role: user.role }, 'your_jwt_secret', { expiresIn: '1h' });
+        res.status(200).json({ message: 'Login successful', token });
+    } catch (err) {
+        console.error("Login error:", err);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
-  
-    // Verificar la contraseña del usuario
-    if (user.password !== password) {
-      // Si la contraseña es incorrecta, enviar un mensaje de error
-      return res.status(401).json({ error: 'Invalid password' });
-    }
-  
-    // Si las credenciales son válidas, enviar una respuesta exitosa
-    res.status(200).json({ message: 'Login successful', username: user.username });
-  };
-  
+};
