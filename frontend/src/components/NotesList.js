@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import Note from './Note'; // Asegúrate de tener este componente
-import NoteForm from './NoteForm'; // Asegúrate de tener este componente
-import '../styles/App.css'
-import UserManagement from './UserManagement';
+import Note from './Note';
+import NoteForm from './NoteForm';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserCog } from '@fortawesome/free-solid-svg-icons';
+import '../styles/App.css';
 
-
-function NotesList({ isAdminLoggedIn}) {
-  const [showUserManagement, setShowUserManagement] = useState(false); // Estado para controlar si se muestra UserManagement
-
-  const handleUserManagementClick = () => {
-    setShowUserManagement(!showUserManagement);
-  }
+function NotesList() {
   const [notes, setNotes] = useState([]);
+
   const fetchNotes = () => {
     fetch('http://localhost:3000/api/notes')
       .then(response => response.json())
@@ -35,7 +32,6 @@ function NotesList({ isAdminLoggedIn}) {
   };
 
   const updateNote = (id, updatedNote) => {
-
     fetch(`http://localhost:3000/api/notes/${id}`, {
         method: 'PUT',
         headers: {
@@ -59,8 +55,6 @@ function NotesList({ isAdminLoggedIn}) {
     });
   };
 
-
-
   const deleteNote = (id) => {
     fetch(`http://localhost:3000/api/notes/${id}`, {
       method: 'DELETE',
@@ -77,28 +71,22 @@ function NotesList({ isAdminLoggedIn}) {
 
   return (
     <div>
-      <div id='UserManagement'>
-        {isAdminLoggedIn && <button onClick={handleUserManagementClick}>Users Management</button>}
-        {showUserManagement && <UserManagement />}
+      <div className="user-management-link">
+        <Link to="/manage-users"><FontAwesomeIcon icon={faUserCog} /> Gestión de Usuarios</Link>
       </div>
-      {!showUserManagement && (
-        <div id='Notes'>
-          <h1>Create Note</h1>
-            <NoteForm addNote={addNote} />
-          <h1>My Notes</h1>
-          {notes.map(note => (
-            <Note 
-              key={note._id}
-              note={note} 
-              deleteNote={() => deleteNote(note._id)} // Cambio aquí
-              updateNote={updateNote} // Pasar directamente la referencia de la función
-              />
-          ))}
-      </div>
-      )}
+      <h1>Create Note</h1>
+      <NoteForm addNote={addNote} />
+      <h1>My Notes</h1>
+      {notes.map(note => (
+        <Note
+          key={note._id}
+          note={note}
+          deleteNote={() => deleteNote(note._id)}
+          updateNote={updateNote}
+        />
+      ))}
     </div>
   );
-  
 }
 
 export default NotesList;

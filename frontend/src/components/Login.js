@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 
@@ -8,14 +8,6 @@ function Login() {
         password: ''
     });
     const navigate = useNavigate();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-    useEffect(() => {
-        // Este efecto se ejecuta cuando `isLoggedIn` cambia.
-        if (isLoggedIn) {
-            navigate('/notes'); // Navega a notas cuando el login es exitoso.
-        }
-    }, [isLoggedIn, navigate]);
 
     const handleChange = (event) => {
         setCredentials({ ...credentials, [event.target.name]: event.target.value });
@@ -27,7 +19,8 @@ function Login() {
             const response = await axios.post('http://localhost:3000/api/login', credentials);
             console.log('Login successful:', response.data);
             localStorage.setItem('token', response.data.token); // Almacena el token en localStorage
-            setIsLoggedIn(true); // Actualiza el estado para desencadenar la redirección
+            localStorage.setItem('role', response.data.role); // Almacena el rol en localStorage
+            navigate('/notes'); // Redirecciona directamente a las notas
         } catch (error) {
             console.error('Login error:', error.response ? error.response.data : 'No response');
             alert('Login failed');
