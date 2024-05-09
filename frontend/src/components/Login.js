@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios from '../axiosConfig'; 
 import { useNavigate, Link } from 'react-router-dom';
 
 function Login() {
@@ -16,7 +16,7 @@ function Login() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/api/login', credentials);
+            const response = await axios.post('/login', credentials);
             console.log('Login successful:', response.data);
             localStorage.setItem('token', response.data.token); // Almacena el token en localStorage
             localStorage.setItem('role', response.data.role); // Almacena el rol en localStorage

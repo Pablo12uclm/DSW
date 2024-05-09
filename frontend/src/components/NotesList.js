@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import axios from '../axiosConfig';  // Asegúrate de importar tu configuración personalizada de Axios
 import Note from './Note';
 import NoteForm from './NoteForm';
 import { Link } from 'react-router-dom';
@@ -10,45 +11,39 @@ function NotesList() {
   const [notes, setNotes] = useState([]);
 
   const fetchNotes = () => {
-    fetch('http://localhost:3000/api/notes')
-      .then(response => response.json())
-      .then(data => setNotes(data))
+    axios.get('/notes')
+      .then(response => setNotes(response.data))
       .catch(error => console.error('Error fetching notes:', error));
   };
 
-  const addNote = (note) => {
-    fetch('http://localhost:3000/api/notes', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(note),
-    })
-    .then(response => response.json())
-    .then(newNote => {
-      setNotes([...notes, newNote]); // Agregar la nueva nota al estado
-    })
-    .catch(error => console.error('Error adding note:', error));
+  const handleNoteAdded = (newNote) => {
+    setNotes(prevNotes => [...prevNotes, newNote]);
   };
 
-  const updateNote = (id, updatedNote) => {
-    fetch(`http://localhost:3000/api/notes/${id}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedNote)
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP status ${response.status}`);
+  const addNote = (note) => {
+    axios.post('/notes', note)
+      .then(response => {
+        console.log('Note added successfully:', response.data);
+        // Asegurarse de que la respuesta del servidor contiene los datos correctos
+        if (response.data && response.status === 201) {
+          // Método 1: Agregar la nueva nota al estado
+          setNotes(prevNotes => [...prevNotes, response.data]);
+        } else {
+          throw new Error('Invalid server response');
         }
-        return response.json();
-    })
-    .then(data => {
-        console.log("Respuesta después de actualizar:", data);
+      })
+      .catch(error => {
+        console.error('Error adding note:', error);
+      });
+  };
+  
+
+  const updateNote = (id, updatedNote) => {
+    axios.put(`/notes/${id}`, updatedNote)
+    .then(response => {
+        console.log("Respuesta después de actualizar:", response.data);
         // Aquí actualizamos el estado con la nota actualizada
-        setNotes(prevNotes => prevNotes.map(note => note._id === id ? { ...note, ...data } : note));
+        setNotes(prevNotes => prevNotes.map(note => note._id === id ? { ...note, ...response.data } : note));
     })
     .catch(error => {
         console.error('Error al actualizar la nota:', error);
@@ -56,9 +51,7 @@ function NotesList() {
   };
 
   const deleteNote = (id) => {
-    fetch(`http://localhost:3000/api/notes/${id}`, {
-      method: 'DELETE',
-    })
+    axios.delete(`/notes/${id}`)
     .then(() => {
       fetchNotes(); // Recargar las notas después de eliminar
     })
@@ -75,7 +68,7 @@ function NotesList() {
         <Link to="/manage-users"><FontAwesomeIcon icon={faUserCog} /> Gestión de Usuarios</Link>
       </div>
       <h1>Create Note</h1>
-      <NoteForm addNote={addNote} />
+      <NoteForm addNote={addNote} onNoteAdded={handleNoteAdded} />
       <h1>My Notes</h1>
       {notes.map(note => (
         <Note
