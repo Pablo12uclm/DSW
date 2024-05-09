@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios from '../axiosConfig';  // Usar la configuración personalizada de Axios
 import { useNavigate, Link } from 'react-router-dom';
 
 function Register() {
@@ -17,9 +17,10 @@ function Register() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/api/users/register', userDetails);
+            // Usar la base URL configurada y los interceptores automáticamente
+            const response = await axios.post('/users/register', userDetails);
             console.log('Registration successful:', response.data);
-            navigate('/login'); // Redirect to the login page
+            navigate('/login'); // Redireccionar a la página de inicio de sesión
         } catch (error) {
             console.error('Registration error:', error.response ? error.response.data : 'No response');
             alert('Registration failed');
