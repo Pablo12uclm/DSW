@@ -1,0 +1,109 @@
+/* Note.css */
+
+.note-container {
+  margin: 20px;
+  padding: 10px;
+  border: 1px solid #000000;
+  border-radius: 5px;
+  background-color: #a5bb4318;
+}
+
+.note-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.note-content {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.note-items {
+  margin-bottom: 10px;
+}
+
+.note-item {
+  list-style-type: none;
+}
+
+.note-image {
+  max-width: 100px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.note-buttons {
+  margin-top: 10px;
+}
+
+.note-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.delete-button {
+  color: red;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.note-items, .note-images {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.add-button {
+  margin-top: 10px;
+  color: green;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.note-items, .note-images {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+.note-button:hover {
+  background-color: #0056b3;
+}
+
+.note-container .note-title,
+.note-container .note-content,
+.note-container .note-items,
+.note-container input,
+.note-container textarea {
+  margin-bottom: 10px; /* Aumenta el espacio debajo de cada elemento */
+  width: calc(100% - 20px); /* Asegura que los elementos no se extiendan más allá del contenedor */
+  padding: 8px; /* Aumenta el espacio interior */
+}
+
+.note-container button {
+  margin-top: 10px; /* Espacio encima de los botones */
+  margin-right: 1px; /* Espacio entre botones */
+  padding: 8px 16px; /* Ajusta a tu preferencia para botones más grandes */
+  margin-bottom: 20px;
+}
+
+.note-container .note-button {
+  display: inline-block; /* Si tus botones son block o inline-block, ajusta según necesites */
+  cursor: pointer; /* Asegura que el cursor indique clickeabilidad */
+}
+
+.note-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Espacio entre elementos del contenedor de notas */
+}
