@@ -15,7 +15,17 @@ exports.getAllNotes = async (req, res) => {
 
 exports.createNote = async (req, res) => {
   try {
-      const newNote = new Note(req.body);
+      const { title, content, items, images } = req.body;
+      const userId = req.user.id; // Asegúrate de que el middleware isAuthenticated está siendo usado en esta ruta.
+
+      const newNote = new Note({
+          title,
+          content,
+          items,
+          images,
+          user: userId // Añadir el userId
+      });
+
       await newNote.save();
       res.status(201).json(newNote);
   } catch (err) {
