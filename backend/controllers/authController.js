@@ -1,22 +1,29 @@
-const DBConnection = require('./dbConnection');
+const User = require('../models/User');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
-// Controlador para el inicio de sesión
 exports.login = async (req, res) => {
-  const { username, password } = req.body;
+    const { username, password } = req.body;
 
-  try {
-    // Obtener los datos del usuario desde la base de datos
-    const user = await DBConnection.getUser(username, password);
+    try {
+        const user = await User.findOne({ username });
+        if (!user) {
+            console.log("User not found:", username);
+            return res.status(401).json({ error: 'Invalid username or password' });
+        }
 
-    if (!user) {
-      // Si el usuario no existe, enviar un mensaje de error
-      return res.status(401).json({ error: 'Invalid username or password' });
+        const match = await bcrypt.compare(password, user.password);
+        console.log("Password match:", match);
+
+        if (!match) {
+            console.log("Password incorrect for user:", username);
+            return res.status(401).json({ error: 'Invalid password' });
+        }
+
+        const token = jwt.sign({ id: user._id, role: user.role }, 'your_jwt_secret', { expiresIn: '1h' });
+        res.status(200).json({ message: 'Login successful', token });
+    } catch (err) {
+        console.error("Login error:", err);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
-
-    // Si las credenciales son válidas, enviar una respuesta exitosa
-    res.status(200).json({ message: 'Login successful', username: user.username });
-  } catch (error) {
-    console.error('Error during login:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
 };

@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import Note from './Note'; // Asegúrate de tener este componente
-import NoteForm from './NoteForm'; // Asegúrate de tener este componente
-import '../styles/App.css'
-import UserManagement from './UserManagement';
+import Note from './Note';
+import NoteForm from './NoteForm';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserCog } from '@fortawesome/free-solid-svg-icons';
+import '../styles/App.css';
 
-
-function NotesList({ isAdminLoggedIn}) {
-  const [showUserManagement, setShowUserManagement] = useState(false); // Estado para controlar si se muestra UserManagement
-
-  const handleUserManagementClick = () => {
-    setShowUserManagement(!showUserManagement);
-  }
+function NotesList() {
   const [notes, setNotes] = useState([]);
+
   const fetchNotes = () => {
     fetch('http://localhost:3000/api/notes')
       .then(response => response.json())
@@ -36,23 +33,26 @@ function NotesList({ isAdminLoggedIn}) {
 
   const updateNote = (id, updatedNote) => {
     fetch(`http://localhost:3000/api/notes/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updatedNote),
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedNote)
     })
-    .then(response => response.json())
-    .then(updatedNote => {
-      const updatedNotes = notes.map(note => {
-        if (note.id === id) {
-          return updatedNote;
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP status ${response.status}`);
         }
-        return note;
-      });
-      setNotes(updatedNotes); // Actualizar el estado con la nota actualizada
+        return response.json();
     })
-    .catch(error => console.error('Error updating note:', error));
+    .then(data => {
+        console.log("Respuesta después de actualizar:", data);
+        // Aquí actualizamos el estado con la nota actualizada
+        setNotes(prevNotes => prevNotes.map(note => note._id === id ? { ...note, ...data } : note));
+    })
+    .catch(error => {
+        console.error('Error al actualizar la nota:', error);
+    });
   };
 
   const deleteNote = (id) => {
@@ -71,33 +71,22 @@ function NotesList({ isAdminLoggedIn}) {
 
   return (
     <div>
-<<<<<<< Updated upstream
-      <div id='UserManagement'>
-        {isAdminLoggedIn && <button onClick={handleUserManagementClick}>Users Management</button>}
-        {showUserManagement && <UserManagement />}
-=======
       <div className="user-management-link">
         {/*<Link to="/manage-users"><FontAwesomeIcon icon={faUserCog} /> Gestión de Usuarios</Link>*/}
->>>>>>> Stashed changes
       </div>
-      {!showUserManagement && (
-        <div id='Notes'>
-          <h1>Create Note</h1>
-            <NoteForm addNote={addNote} />
-          <h1>My Notes</h1>
-          {notes.map(note => (
-            <Note 
-              key={note.id} 
-              note={note} 
-              deleteNote={deleteNote} 
-              updateNote={updateNote}
-            />
-          ))}
-      </div>
-      )}
+      <h1>Create Note</h1>
+      <NoteForm addNote={addNote} />
+      <h1>My Notes</h1>
+      {notes.map(note => (
+        <Note
+          key={note._id}
+          note={note}
+          deleteNote={() => deleteNote(note._id)}
+          updateNote={updateNote}
+        />
+      ))}
     </div>
   );
-  
 }
 
 export default NotesList;

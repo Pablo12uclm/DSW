@@ -1,4 +1,4 @@
-import React from 'react';
+/*import React from 'react';
 function Message() {
 const [data, setData] = React.useState(null);
 React.useEffect(() => {
@@ -14,4 +14,4 @@ return (
 </div>
 );
 }
-export default Message;
+export default Message;   */
