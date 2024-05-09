@@ -1,0 +1,76 @@
+/* App.css */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #dddddd74;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  h1 {
+    font-size: 2rem; /* Aumenta el tamaño de la fuente */
+    text-align: center; /* Centra el texto */
+    color: #333; /* Cambia el color del texto */
+    margin-bottom: 20px; /* Añade un margen en la parte inferior para separarlo de otros elementos */
+    font-family: 'Arial', sans-serif; /* Cambia la fuente (opcional) */
+  }
+  
+  h2 {
+    font-size: 1.5rem; /* Ligeramente más pequeño que el h1 */
+    text-align: center; /* Centra el texto */
+    color: #333; /* Igual color que h1 para mantener coherencia */
+    margin-top: 40px; /* Espacio antes del título */
+    margin-bottom: 20px; /* Espacio después del título, antes de las notas */
+    font-family: 'Arial', sans-serif; /* Mantiene la fuente coherente con h1 */
+  }
+  .form-container {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  .form-container1 {
+    position: absolute;
+    top: 40%;
+    left: 44%;
+    transform: translate(-50%, -50%);
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  .form-content {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+    padding: 5px 10px;
+  }
+  .form-input {
+    width: 100%;
+    margin-bottom: 10px;
+    margin-right: 20px;
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .form-button {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 20px;
+    cursor: pointer;
+  }
+  
+  .form-button:hover {
+    background-color: #0056b3;
+  }

@@ -71,9 +71,14 @@ function NotesList({ isAdminLoggedIn}) {
 
   return (
     <div>
+<<<<<<< Updated upstream
       <div id='UserManagement'>
         {isAdminLoggedIn && <button onClick={handleUserManagementClick}>Users Management</button>}
         {showUserManagement && <UserManagement />}
+=======
+      <div className="user-management-link">
+        {/*<Link to="/manage-users"><FontAwesomeIcon icon={faUserCog} /> Gestión de Usuarios</Link>*/}
+>>>>>>> Stashed changes
       </div>
       {!showUserManagement && (
         <div id='Notes'>

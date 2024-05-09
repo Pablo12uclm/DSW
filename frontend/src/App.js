@@ -1,5 +1,12 @@
+<<<<<<< Updated upstream
 import React, { useState } from 'react';
 import './styles/App.css';
+=======
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import Register from './components/Register';
+import Login from './components/Login';
+>>>>>>> Stashed changes
 import NotesList from './components/NotesList';
 import LogIn from './components/LogIn';
 import SignUp from './components/SignUp';

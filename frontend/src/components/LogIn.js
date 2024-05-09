@@ -1,46 +1,62 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate, Link } from 'react-router-dom';
+import '../styles/Login.css'
 
-const LogIn = ({ onLogin }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+function Login() {
+    const [credentials, setCredentials] = useState({
+        username: '',
+        password: ''
+    });
+    const navigate = useNavigate();
 
-  const handleLogin = () => {
-    fetch('http://localhost:3000/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    })
-      .then(response => {
-        if (!response.ok) {
-          return response.text().then(errorMessage => {
-            throw new Error(errorMessage); // Corregido: pasa el mensaje de error
-          });
+    const handleChange = (event) => {
+        setCredentials({ ...credentials, [event.target.name]: event.target.value });
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            const response = await axios.post('http://localhost:3000/api/login', credentials);
+            console.log('Login successful:', response.data);
+            localStorage.setItem('token', response.data.token); // Almacena el token en localStorage
+            localStorage.setItem('role', response.data.role); // Almacena el rol en localStorage
+            navigate('/notes'); // Redirecciona directamente a las notas
+        } catch (error) {
+            console.error('Login error:', error.response ? error.response.data : 'No response');
+            alert('Login failed');
         }
-        return response.json();
-      })
-      .then(data => {
-        console.log('Login successful:', data);
-        onLogin(data); // Llama a la función proporcionada por el padre para manejar el inicio de sesión
-      })
-      .catch(error => {
-        console.error('Error during login:', error);
-        setError(error.message); // Establece el mensaje de error obtenido del backend
-      });
-  };
+    };
 
-  return (
-    <div>
-      <h2>Log In</h2>
-      <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      <button onClick={handleLogin}>Login</button>
-      {/* Mostrar mensaje de error si existe */}
-      {error && <p>{error}</p>}
-    </div>
-  );
-};
+    return (
+        <div>
+            <h1>Log In</h1>
+            <div className='form-container'>
+            <form onSubmit={handleSubmit}>
+                <label>Username:</label>
+                <input
+                    type="text"
+                    name="username"
+                    value={credentials.username}
+                    onChange={handleChange}
+                    required
+                    className='form-content'
+                />
+                <label>Password:</label>
+                <input
+                    type="password"
+                    name="password"
+                    value={credentials.password}
+                    onChange={handleChange}
+                    required
+                    className='form-content'
+                />
+                <button type="submit" className='form-button'>Log In</button>
+                <p>No tienes cuenta? <Link to="/register">Regístrate aquí</Link></p>
+            </form>
+            </div>
+        </div>
+    );
+}
 
-export default LogIn;
+export default Login;
