@@ -10,13 +10,13 @@ var mongoose = require('mongoose'); // Importamos Mongoose
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var notesRoutes = require('./routes/notes'); // Rutas para las notas
-var loginRouter = require('./routes/login');
+var loginRouter = require('./routes/login');  // Asegúrate de que esto apunte al archivo correcto
 
 var app = express();
 
 // Configuración de MongoDB
 const mongoURI = 'mongodb://pablo:1234@localhost:27017/notesAppDB';
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(mongoURI)
   .then(() => console.log('MongoDB connected successfully'))
   .catch(err => console.error('MongoDB connection error:', err));
 
@@ -35,13 +35,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Rutas básicas autogeneradas
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 // Ruta para las notas
 app.use('/api/notes', notesRoutes);
-app.use('/api/login', loginRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/login', loginRouter);  // Verifica que la ruta esté definida de esta manera
 
-const authController = require('./controllers/authController');
 
 module.exports = app;
